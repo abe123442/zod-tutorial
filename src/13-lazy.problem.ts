@@ -3,11 +3,17 @@
 import { expect, it } from "vitest";
 import { z } from "zod";
 
-const MenuItem = z.object({
-  //             ^ 🕵️‍♂️
+const BaseMenuItem = z.object({
   link: z.string(),
-  label: z.string(),
-  children: z.array(MenuItem).default([]),
+  label: z.string()
+});
+
+type Item = z.infer<typeof BaseMenuItem> & {
+  children: Item[];
+};
+
+const MenuItem: z.ZodType<Item> = BaseMenuItem.extend({
+  children: z.lazy(() => MenuItem.array()),
 });
 
 // TESTS
