@@ -3,10 +3,17 @@
 import { expect, it } from "vitest";
 import { z } from "zod";
 
+// this is the solution I came up with
+const privacyLevelParser = z.string().refine((v): v is 'private' | 'public' => v === 'private' || v === 'public');
+
+// here are some other alternative solutions
+// const privacyLevelParser = z.literal('private').or(z.literal('public'));
+// const privacyLevelParser = z.union([z.literal('private'), z.literal('public')]);
+// const privacyLevelParser = z.enum(['private', 'public']);
+
 const Form = z.object({
   repoName: z.string(),
-  privacyLevel: z.string(),
-  //              ^ 🕵️‍♂️
+  privacyLevel: privacyLevelParser,
 });
 
 export const validateFormInput = (values: unknown) => {
