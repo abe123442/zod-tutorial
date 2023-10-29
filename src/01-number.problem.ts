@@ -4,9 +4,7 @@ import { expect, it } from "vitest";
 import { z } from "zod";
 //       ^ 🕵️‍♂️
 
-export const toString = (num: unknown) => {
-  return String(num);
-};
+export const toString = (num: unknown) => String(z.number().parse(num));
 
 // TESTS
 
